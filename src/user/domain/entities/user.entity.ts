@@ -1,8 +1,10 @@
+import { Entity } from "@/shared/domain/entities/Entity";
 import { UserProps } from "../types/user.types";
 
-export class UserEntity {
+export class UserEntity extends Entity<UserProps>{
 
-    constructor(public readonly props: UserProps) {
+    constructor(public readonly props: UserProps, id?: string) {
+        super(props, id)
         this.props.createdAt = this.props.createdAt ?? new Date();
     }
 
