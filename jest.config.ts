@@ -13,4 +13,13 @@ export default {
     collectCoverageFrom: ['**/*.(t|j)s'],
     coverageDirectory: '../coverage',
     testEnvironment: 'node',
+    exclude: [
+        "node_modules",
+        "dist"
+    ],
+    include: [
+        "src/**/*",
+        "src/__tests__",
+        "jest.config.js"
+    ]
 };
