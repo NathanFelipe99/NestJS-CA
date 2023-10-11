@@ -1,4 +1,4 @@
-import { v4 as uuidV4, validate as uuidValidate } from 'uuid';
+import { validate as uuidValidate } from 'uuid';
 import { Entity } from './Entity';
 import { StubProps } from './types/stub.props';
 
