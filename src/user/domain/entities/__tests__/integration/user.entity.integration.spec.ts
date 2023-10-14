@@ -1,7 +1,7 @@
 import { UserDataBuilder } from "@/user/domain/helper/user-data.builder";
 import { UserProps } from "@/user/domain/types/user.types";
 import { UserEntity } from "../../user.entity";
-import { EntityValidationError } from "@/shared/domain/entities/errors/ValidationError";
+import { EntityValidationError } from "@/shared/domain/errors/ValidationError";
 
 describe("User entity integration tests", () => {
     let props: UserProps;

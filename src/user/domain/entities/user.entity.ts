@@ -1,7 +1,7 @@
 import { Entity } from "@/shared/domain/entities/Entity";
 import { UserProps } from "../types/user.types";
 import { UserValidatorFactory } from "../validators/user.validator";
-import { EntityValidationError } from "@/shared/domain/entities/errors/ValidationError";
+import { EntityValidationError } from "@/shared/domain/errors/ValidationError";
 
 export class UserEntity extends Entity<UserProps>{
 
