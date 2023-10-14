@@ -45,10 +45,9 @@ describe("User entity integration tests", () => {
         it("Should throw exception on update user name", () => {
             const user = new UserEntity(props);
 
-            expect(() => user.update(null)).toThrowError(EntityValidationError);
-            expect(() => user.update("")).toThrowError(EntityValidationError);
-            expect(() => user.update(1234 as any)).toThrowError(EntityValidationError);
-            expect(() => user.update("a".repeat(256))).toThrowError(EntityValidationError);
+            [null, "", 1234 as any, "a".repeat(256)].forEach((value) => {
+                expect(() => user.update(value)).toThrowError(EntityValidationError);
+            });
         });
 
         it("Should update user name", () => {
@@ -67,10 +66,9 @@ describe("User entity integration tests", () => {
         it("Should throw exception on update user password", () => {
             const user = new UserEntity(props);
 
-            expect(() => user.updatePassword(null)).toThrowError(EntityValidationError);
-            expect(() => user.updatePassword("")).toThrowError(EntityValidationError);
-            expect(() => user.updatePassword(1234 as any)).toThrowError(EntityValidationError);
-            expect(() => user.updatePassword("a".repeat(101))).toThrowError(EntityValidationError);
+            [null, "", 1234 as any, "a".repeat(101)].forEach((value) => {
+                expect(() => user.updatePassword(value)).toThrowError(EntityValidationError);
+            });
         });
 
         it("Should update user password", () => {
