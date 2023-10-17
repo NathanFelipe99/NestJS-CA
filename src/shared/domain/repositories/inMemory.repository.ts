@@ -18,15 +18,13 @@ export abstract class InMemoryRepository<E extends Entity> implements IRepositor
     }
 
     async update(entity: E): Promise<void> {
-        await this._get(entity.id);
         const foundIndex = await this._getIndex(entity.id);
         this.items[foundIndex] = entity;
     }
 
     async delete(id: string): Promise<void> {
-        await this._get(id);
         const foundIndex = await this._getIndex(id);
-        this.items.slice(foundIndex, 1);
+        this.items.splice(foundIndex, 1);
     }
 
     protected async _get(id: string): Promise<E> {
@@ -40,6 +38,7 @@ export abstract class InMemoryRepository<E extends Entity> implements IRepositor
     protected async _getIndex(id: string): Promise<number> {
         const _id = `${id}`;
         const index = this.items.findIndex(item => item._id === _id);
+        
         if (index < 0) throw new NotFoundError("Entity index not found!");
         return index;
     }

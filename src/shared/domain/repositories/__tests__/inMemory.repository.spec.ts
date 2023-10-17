@@ -45,7 +45,7 @@ describe("In memory repository unit tests", () => {
             expect(foundEntity.props).toStrictEqual(props);
         });
 
-        it("Shouldn't throw error when entity not found", () => {
+        it("Should throw error when entity not found", () => {
             expect(async () => await SUT.findById("")).rejects.toThrow(new NotFoundError("Entity not found!"));
         });
     });
@@ -81,10 +81,59 @@ describe("In memory repository unit tests", () => {
     });
 
     describe("Testing update method", () => {
+        it("Should throw error when entity not found", () => {
+            const props: StubEntityProps = {
+                name: "New name",
+                price: 100
+            };
+            const entity = new StubEntity(props);
 
+            expect(async () => await SUT.update(entity)).rejects.toThrow(new NotFoundError("Entity index not found!"));
+        });
+
+        it("Should update an entity", async () => {
+            const props: StubEntityProps = {
+                name: "Violin",
+                price: 500
+            };
+            const entity = new StubEntity(props);
+            await SUT.insert(entity);
+
+            const updateProps: StubEntityProps = {
+                name: "Eletric violin",
+                price: 2600
+            };
+
+            const entityUpdated = new StubEntity(updateProps, entity._id);
+
+            await SUT.update(entityUpdated);
+            expect(entityUpdated.toJSON()).toStrictEqual(SUT.items[0].toJSON());
+        });
     });
 
     describe("Testing delete method", () => {
+        it("Should throw error when entity not found", () => {
+            const props: StubEntityProps = {
+                name: "New name",
+                price: 100
+            };
+            const entity = new StubEntity(props);
 
+            expect(() => SUT.delete(entity._id)).rejects.toThrow(new NotFoundError("Entity index not found!"));
+        });
+
+        it("Should delete an entity", async () => {
+            const props: StubEntityProps = {
+                name: "New name",
+                price: 100
+            };
+
+            const entity = new StubEntity(props);
+            await SUT.insert(entity);
+
+            await SUT.delete(entity._id);
+            expect(SUT.items).toHaveLength(0);
+        });
+        
     });
 });
