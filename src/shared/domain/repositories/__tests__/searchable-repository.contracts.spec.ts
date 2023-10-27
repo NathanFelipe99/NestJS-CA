@@ -1,8 +1,7 @@
-import { SearchParams } from "../searchable-repository.contracts";
+import { SearchParams, SearchResult, SearchResultProps } from "../searchable-repository.contracts";
 
 describe("Searchable repository unit tests", () => {
     describe("SearchParams tests", () => {
-
         it("Page prop single test", () => {
             const SUT = new SearchParams();
             expect(SUT.page).toEqual(1);
@@ -140,6 +139,54 @@ describe("Searchable repository unit tests", () => {
 
                 expect(new SearchParams(receivedProps).filter).toEqual(param.expected);
             });
+        });
+    });
+
+    describe("SearchResult tests", () => {
+        it("Constructor method", () => {
+            const props = {
+                items: ["test1", "test2", "test3", "test4"] as any,
+                total: 4,
+                currentPage: 1,
+                perPage: 2,
+                sortField: null,
+                sortDir: null,
+                filter: null
+            };
+            const SUT = new SearchResult(props);
+
+            const expectedJSON = Object.assign(props, { lastPage: 2 });
+            expect(SUT.toJSON()).toStrictEqual(expectedJSON)
+        });
+
+        it("LastPage prop test", () => {
+            const props = {
+                items: ["test1", "test2", "test3", "test4"] as any,
+                total: 8,
+                currentPage: 1,
+                perPage: 2,
+                sortField: null,
+                sortDir: null,
+                filter: null
+            };
+            const SUT = new SearchResult(props);
+
+            expect(SUT.lastPage).toEqual(4);
+        });
+
+        it("LastPage prop test 2", () => {
+            const props = {
+                items: ["test1", "test2", "test3", "test4"] as any,
+                total: 8,
+                currentPage: 1,
+                perPage: 16,
+                sortField: null,
+                sortDir: null,
+                filter: null
+            };
+            const SUT = new SearchResult(props);
+
+            expect(SUT.lastPage).toEqual(1);
         });
     });
 });

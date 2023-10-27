@@ -116,7 +116,7 @@ export class SearchResult<E extends Entity, Filter = string> {
 
     toJSON(forceEntity: boolean = false) {
         return {
-            items: forceEntity ? this.items : this.items.map(item => item.toJSON()),
+            items: forceEntity ? this.items.map(item => item.toJSON()) : this.items,
             total: this.total,
             currentPage: this.currentPage,
             perPage: this.perPage,
@@ -130,8 +130,9 @@ export class SearchResult<E extends Entity, Filter = string> {
 
 export interface ISearchableRepository<
     E extends Entity,
-    SearchParams,
-    SearchResult
+    Filter = string,
+    SearchInput = SearchParams,
+    SearchOutput = SearchResult<E, Filter>
 > extends IRepository<E> {
-    search(props: SearchParams): Promise<SearchResult>;
+    search(props: SearchInput): Promise<SearchOutput>;
 }
