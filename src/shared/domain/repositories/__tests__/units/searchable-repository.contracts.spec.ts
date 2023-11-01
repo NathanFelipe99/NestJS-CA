@@ -1,4 +1,4 @@
-import { SearchParams, SearchResult } from "../searchable-repository.contracts";
+import { SearchParams, SearchResult } from "../../searchable-repository.contracts";
 
 describe("Searchable repository unit tests", () => {
     describe("SearchParams tests", () => {
@@ -156,7 +156,7 @@ describe("Searchable repository unit tests", () => {
             const SUT = new SearchResult(props);
 
             const expectedJSON = Object.assign(props, { lastPage: 2 });
-            expect(SUT.toJSON()).toStrictEqual(expectedJSON)
+            expect(SUT.toJSON()).toStrictEqual(expectedJSON);
         });
 
         it("LastPage prop test", () => {

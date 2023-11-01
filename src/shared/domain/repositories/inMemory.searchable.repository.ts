@@ -15,7 +15,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
 
         return new SearchResult({
             items: paginatedItems,
-            total: paginatedItems.length,
+            total: this.items.length,
             currentPage: props.page,
             perPage: props.perPage,
             sortDir: props.sortDir,
@@ -30,7 +30,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
         if (!sortField || !this.sortableFiels.includes(sortField)) {
             return items;
         }
-
+        
         return [...items].sort((a, b) => {
             return a.props[sortField] < b.props[sortField] ? (sortDir === "ASC" ? -1 : 1) :
                 a.props[sortField] > b.props[sortField] ? (sortDir === "ASC" ? 1 : -1) : 0;

@@ -133,7 +133,7 @@ export interface ISearchableRepository<
     Filter = string,
     SearchInput = SearchParams,
     SearchOutput = SearchResult<E, Filter>
-    > extends IRepository<E> {
+> extends IRepository<E> {
     sortableFiels: string[];
     search(props: SearchInput): Promise<SearchOutput>;
 }
