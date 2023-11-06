@@ -1,6 +1,5 @@
 import { ConflictError } from "@/shared/domain/errors/ConflictError";
 import { NotFoundError } from "@/shared/domain/errors/NotFoundError";
-import { InMemoryRepository } from "@/shared/domain/repositories/inMemory.repository";
 import { InMemorySearchableRepository } from "@/shared/domain/repositories/inMemory.searchable.repository";
 import { SortDirection } from "@/shared/domain/repositories/searchable-repository.contracts";
 import { UserEntity } from "@/user/domain/entities/user.entity";
