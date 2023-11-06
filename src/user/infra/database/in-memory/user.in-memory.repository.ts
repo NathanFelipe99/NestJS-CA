@@ -2,10 +2,13 @@ import { ConflictError } from "@/shared/domain/errors/ConflictError";
 import { NotFoundError } from "@/shared/domain/errors/NotFoundError";
 import { InMemoryRepository } from "@/shared/domain/repositories/inMemory.repository";
 import { InMemorySearchableRepository } from "@/shared/domain/repositories/inMemory.searchable.repository";
+import { SortDirection } from "@/shared/domain/repositories/searchable-repository.contracts";
 import { UserEntity } from "@/user/domain/entities/user.entity";
 import { IUserRepository } from "@/user/domain/repositories/user.repository.contracts";
 
-export class UserInMemoryRepository extends InMemorySearchableRepository<UserEntity> implements IUserRepository {
+export class UserInMemoryRepository extends InMemorySearchableRepository<UserEntity> implements IUserRepository.Repository {
+    sortableFiels: string[] = ["name", "createdAt"];
+
     async findByEmail(email: string): Promise<UserEntity> {
         const _email = `${email}`;
 
@@ -22,4 +25,19 @@ export class UserInMemoryRepository extends InMemorySearchableRepository<UserEnt
         if (entity) throw new ConflictError("Email address already in use!");
     }
 
+    protected async applyFilter(items: UserEntity[], filter: IUserRepository.Filter): Promise<UserEntity[]> {
+        if (!filter) {
+            return items;
+        }
+
+        return items.filter((item) => {
+            return item.props.name.toLowerCase().includes(filter.toLowerCase());
+        });
+    }
+
+    protected async applySort(items: UserEntity[], sortField: string | null, sortDir: SortDirection | null): Promise<UserEntity[]> {
+        return !sortField
+            ? super.applySort(items, "createdAt", "DESC")
+            : super.applySort(items, sortField, sortDir);
+    }
 }
