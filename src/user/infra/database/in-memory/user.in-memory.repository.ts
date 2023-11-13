@@ -3,9 +3,9 @@ import { NotFoundError } from "@/shared/domain/errors/NotFoundError";
 import { InMemorySearchableRepository } from "@/shared/domain/repositories/inMemory.searchable.repository";
 import { SortDirection } from "@/shared/domain/repositories/searchable-repository.contracts";
 import { UserEntity } from "@/user/domain/entities/user.entity";
-import { IUserRepository } from "@/user/domain/repositories/user.repository.contracts";
+import { UserRepository } from "@/user/domain/repositories/user.repository.contracts";
 
-export class UserInMemoryRepository extends InMemorySearchableRepository<UserEntity> implements IUserRepository.Repository {
+export class UserInMemoryRepository extends InMemorySearchableRepository<UserEntity> implements UserRepository.Repository {
     sortableFiels: string[] = ["name", "createdAt"];
 
     async findByEmail(email: string): Promise<UserEntity> {
@@ -24,7 +24,7 @@ export class UserInMemoryRepository extends InMemorySearchableRepository<UserEnt
         if (entity) throw new ConflictError("Email address already in use!");
     }
 
-    protected async applyFilter(items: UserEntity[], filter: IUserRepository.Filter): Promise<UserEntity[]> {
+    protected async applyFilter(items: UserEntity[], filter: UserRepository.Filter): Promise<UserEntity[]> {
         if (!filter) {
             return items;
         }

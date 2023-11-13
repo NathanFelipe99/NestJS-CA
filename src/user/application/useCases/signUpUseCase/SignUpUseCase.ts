@@ -1,16 +1,17 @@
 import { BadRequestError } from "@/user/application/errors/BadRequestError";
 import { UserUseCaseTypes } from "../../types/user.application.types";
-import { IUserRepository } from "@/user/domain/repositories/user.repository.contracts";
+import { UserRepository } from "@/user/domain/repositories/user.repository.contracts";
 import { UserEntity } from "@/user/domain/entities/user.entity";
 import { IHashProvider } from "@/shared/application/providers/hash.provider";
+import { UserOutput } from "../../dto/userOutput";
 
 export class SignUpUseCase {
     constructor(
-        private userRepository: IUserRepository.Repository,
+        private userRepository: UserRepository.Repository,
         private hashProvider: IHashProvider
     ) { }
 
-    async execute(data: UserUseCaseTypes.SignUpInput): Promise<UserUseCaseTypes.SignUpOutput>{
+    async execute(data: UserUseCaseTypes.SignUpInput): Promise<UserOutput>{
         const { email, name, password } = data;
         if (!email || !name || !password) {
             throw new BadRequestError("Invalid input data!");
