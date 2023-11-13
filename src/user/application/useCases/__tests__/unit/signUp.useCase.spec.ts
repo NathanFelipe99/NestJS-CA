@@ -1,5 +1,5 @@
 import { UserInMemoryRepository } from "@/user/infra/database/in-memory/user.in-memory.repository";
-import { SignUpUseCase } from "../../SignUpUseCase";
+import { SignUpUseCase } from "../../signUpUseCase/SignUpUseCase";
 import { IHashProvider } from "@/shared/application/providers/hash.provider";
 import { BcryptJsHashProvider } from "@/user/infra/providers/hash/bcryptjs.hash.provider";
 import { UserUseCaseTypes } from "@/user/application/types/user.application.types";
