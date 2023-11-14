@@ -4,18 +4,18 @@ import { IHashProvider } from "@/shared/application/providers/hash.provider";
 import { BcryptJsHashProvider } from "@/user/infra/providers/hash/bcryptjs.hash.provider";
 import { UserUseCaseTypes } from "@/user/application/types/user.application.types";
 import { UserDataBuilder } from "@/user/domain/helper/user-data.builder";
-import { BadRequestError } from "@/user/application/errors/BadRequestError";
+import { BadRequestError } from "@/shared/application/errors/BadRequestError";
 import { ConflictError } from "@/shared/domain/errors/ConflictError";
 
 describe("Testing SignUp Use Case", () => {
-    let SUT: SignUpUseCase,
+    let SUT: SignUpUseCase.UseCase,
         repository: UserInMemoryRepository,
         provider: IHashProvider;
 
     beforeEach(() => {
         repository = new UserInMemoryRepository();
         provider = new BcryptJsHashProvider();
-        SUT = new SignUpUseCase(repository, provider);
+        SUT = new SignUpUseCase.UseCase(repository, provider);
     });
 
     it("Should create an user", async () => {

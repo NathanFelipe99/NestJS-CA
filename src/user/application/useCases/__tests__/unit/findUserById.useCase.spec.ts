@@ -4,12 +4,12 @@ import { UserEntity } from "@/user/domain/entities/user.entity";
 import { UserDataBuilder } from "@/user/domain/helper/user-data.builder";
 
 describe("Testing FindUserById use case ", () => {
-    let SUT: FindUserByIdUseCase,
+    let SUT: FindUserByIdUseCase.UseCase,
         repository: UserInMemoryRepository;
 
     beforeEach(() => {
         repository = new UserInMemoryRepository();
-        SUT = new FindUserByIdUseCase(repository);
+        SUT = new FindUserByIdUseCase.UseCase(repository);
     });
 
     it("Should throws error when entity is not found", async () => {
