@@ -26,7 +26,7 @@ describe("Testing FindUserById use case ", () => {
         repository.items = items;
 
         const entityResult = await SUT.execute({ id: items[0]._id });
-        expect(findByIdSpyOn).toHaveBeenCalledTimes(1); 
+        expect(findByIdSpyOn).toHaveBeenCalledTimes(1);
         expect(entityResult).toMatchObject(items[0].props);
     });
 });

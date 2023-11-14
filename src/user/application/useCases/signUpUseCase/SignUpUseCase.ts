@@ -4,8 +4,9 @@ import { UserRepository } from "@/user/domain/repositories/user.repository.contr
 import { UserEntity } from "@/user/domain/entities/user.entity";
 import { IHashProvider } from "@/shared/application/providers/hash.provider";
 import { UserOutput } from "../../dto/userOutput";
+import { UseCase } from "@/shared/application/useCases/UseCase";
 
-export class SignUpUseCase {
+export class SignUpUseCase implements UseCase<UserUseCaseTypes.SignUpInput, UserOutput>{
     constructor(
         private userRepository: UserRepository.Repository,
         private hashProvider: IHashProvider
