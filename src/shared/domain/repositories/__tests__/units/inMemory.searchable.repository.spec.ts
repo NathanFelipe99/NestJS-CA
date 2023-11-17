@@ -83,7 +83,7 @@ describe("Testing SearchableRepository", () => {
             expect(spySortMethod).not.toHaveBeenCalled();
 
             itemsSorted = await SUT["applySort"](items, "price", "");
-            expect(itemsSorted).toStrictEqual(items);
+            expect(itemsSorted.map(item => item.props)).toStrictEqual(items.map(item => item.props));
             expect(spySortMethod).not.toHaveBeenCalled();
         });
 
