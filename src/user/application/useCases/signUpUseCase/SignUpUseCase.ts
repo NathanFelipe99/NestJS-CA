@@ -3,7 +3,7 @@ import { UserUseCaseTypes } from "../../types/user.application.types";
 import { UserRepository } from "@/user/domain/repositories/user.repository.contracts";
 import { UserEntity } from "@/user/domain/entities/user.entity";
 import { IHashProvider } from "@/shared/application/providers/hash.provider";
-import { UserOutput } from "../../dto/userOutput";
+import { UserOutput, UserOutputMapper } from "../../dto/userOutput";
 import { UseCase as DefaultUseCase } from "@/shared/application/useCases/UseCase";
 
 export namespace SignUpUseCase {
@@ -30,7 +30,7 @@ export namespace SignUpUseCase {
 
             await this.userRepository.insert(entity);
 
-            return entity.toJSON();
+            return UserOutputMapper.toOutput(entity);
         }
     }
 }

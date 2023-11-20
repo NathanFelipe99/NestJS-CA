@@ -1,6 +1,6 @@
 import { UserRepository } from "@/user/domain/repositories/user.repository.contracts";
 import { UserUseCaseTypes } from "../../types/user.application.types";
-import { UserOutput } from "../../dto/userOutput";
+import { UserOutput, UserOutputMapper } from "../../dto/userOutput";
 import { UseCase as DefaultUseCase } from "@/shared/application/useCases/UseCase";
 
 export namespace FindUserByIdUseCase {
@@ -13,7 +13,7 @@ export namespace FindUserByIdUseCase {
 
         async execute(data: Input): Promise<Output> {
             const entity = await this.userRepository.findById(data.id);
-            return entity.toJSON();
+            return UserOutputMapper.toOutput(entity);
         }
     }
 }
