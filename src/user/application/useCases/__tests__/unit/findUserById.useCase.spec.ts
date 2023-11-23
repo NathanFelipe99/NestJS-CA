@@ -12,11 +12,11 @@ describe("Testing FindUserById use case ", () => {
         SUT = new FindUserByIdUseCase.UseCase(repository);
     });
 
-    it("Should throws error when entity is not found", async () => {
+    it("It should throw an error when entity is not found", async () => {
         await expect(() => SUT.execute({ id: "fakeID" })).rejects.toThrowError("Entity not found!");
     });
 
-    it("Should find an user by ID", async () => {
+    it("It should find an user by ID", async () => {
         const findByIdSpyOn = jest.spyOn(repository, "findById");
         const items: UserEntity[] = [
             new UserEntity(UserDataBuilder({})),

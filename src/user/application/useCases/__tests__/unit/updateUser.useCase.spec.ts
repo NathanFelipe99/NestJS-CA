@@ -12,15 +12,15 @@ describe("Testing UpdateUser use case ", () => {
         SUT = new UpdateUserUseCase.UseCase(repository);
     });
 
-    it("Should throws error when name is not provided", async () => {
+    it("It should throw an error when name is not provided", async () => {
         await expect(SUT.execute({ id: "TestID", name: "" })).rejects.toThrowError("Name wasn't provided!");
     });
 
-    it("Should throws error when entity is not found", async () => {
+    it("It should throw an error when entity is not found", async () => {
         await expect(() => SUT.execute({ id: "fakeID", name: "NewName" })).rejects.toThrowError("Entity not found!");
     });
 
-    it("Should update an user", async () => {
+    it("It should update an user", async () => {
         const updateSpyOn = jest.spyOn(repository, "update");
         const items: UserEntity[] = [
             new UserEntity(UserDataBuilder({})),

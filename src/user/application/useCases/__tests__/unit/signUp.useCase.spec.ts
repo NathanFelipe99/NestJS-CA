@@ -18,7 +18,7 @@ describe("Testing SignUp Use Case", () => {
         SUT = new SignUpUseCase.UseCase(repository, provider);
     });
 
-    it("Should create an user", async () => {
+    it("It should create an user", async () => {
         const spyOnInsert = jest.spyOn(repository, "insert");
         const userData: UserUseCaseTypes.SignUpInput = UserDataBuilder({});
 
@@ -28,7 +28,7 @@ describe("Testing SignUp Use Case", () => {
         expect(resultEntity.createdAt).toBeInstanceOf(Date);
     });
 
-    it("Shouldn't create an user because email already exists", async () => {
+    it("It shouldn't create an user because email already exists", async () => {
         const spyOnInsert = jest.spyOn(repository, "insert");
         const userData: UserUseCaseTypes.SignUpInput = UserDataBuilder({ email: "test@test.com" });
 
@@ -38,17 +38,17 @@ describe("Testing SignUp Use Case", () => {
         await expect(async () => await SUT.execute(userData)).rejects.toBeInstanceOf(ConflictError);
     });
 
-    it("Should throw error when name isn't providded", async () => {
+    it("It should throw an error when name isn't providded", async () => {
         const userData: UserUseCaseTypes.SignUpInput = Object.assign(UserDataBuilder({}), { name: null });
         await expect(() => SUT.execute(userData)).rejects.toBeInstanceOf(BadRequestError);
     });
 
-    it("Should throw error when email isn't providded", async () => {
+    it("It should throw an error when email isn't providded", async () => {
         const userData: UserUseCaseTypes.SignUpInput = Object.assign(UserDataBuilder({}), { email: null });
         await expect(() => SUT.execute(userData)).rejects.toBeInstanceOf(BadRequestError);
     });
 
-    it("Should throw error when password isn't providded", async () => {
+    it("It should throw an error when password isn't providded", async () => {
         const userData: UserUseCaseTypes.SignUpInput = Object.assign(UserDataBuilder({}), { password: null });
         await expect(() => SUT.execute(userData)).rejects.toBeInstanceOf(BadRequestError);
     });

@@ -7,7 +7,7 @@ export class UserEntity extends Entity<UserProps>{
 
     constructor(public readonly props: UserProps, id?: string) {
         UserEntity.validate(props);
-        super(props, id)
+        super(props, id);
         this.props.createdAt = this.props.createdAt ?? new Date();
     }
 

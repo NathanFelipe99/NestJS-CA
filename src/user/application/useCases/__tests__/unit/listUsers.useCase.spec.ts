@@ -14,7 +14,7 @@ describe("Testing ListUsers use case", () => {
     });
 
     describe("toOuput method", () => {
-        it("Should return an empty array of items", () => {
+        it("It should return an empty array of items", () => {
             const result = new UserRepository.SearchResult({
                 items: [] as any,
                 total: 1,
@@ -57,7 +57,7 @@ describe("Testing ListUsers use case", () => {
             });
         });
 
-        it("Execute method should return users ordered by createdAt", async () => {
+        it("Execute method It should return users ordered by createdAt", async () => {
             const createdAt = new Date(),
                 items = [
                     new UserEntity(UserDataBuilder({ createdAt })),
@@ -77,7 +77,7 @@ describe("Testing ListUsers use case", () => {
             });
         });
 
-        it("Execute method should return users using pagination, sort and filter", async () => {
+        it("Execute method It should return users using pagination, sort and filter", async () => {
             const items = [
                     new UserEntity(UserDataBuilder({ name: "John Doe" })),
                     new UserEntity(UserDataBuilder({ name: "Jane Doe" })),
