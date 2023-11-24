@@ -8,4 +8,9 @@ export namespace UserUseCaseTypes {
     export type ListInput = {
         id: string;
     }
+
+    export type SignInInput = {
+        email: string;
+        password: string;
+    }
 }

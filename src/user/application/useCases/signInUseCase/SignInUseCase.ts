@@ -1,13 +1,13 @@
 import { BadRequestError } from "@/shared/application/errors/BadRequestError";
 import { UserUseCaseTypes } from "../../types/user.application.types";
 import { UserRepository } from "@/user/domain/repositories/user.repository.contracts";
-import { UserEntity } from "@/user/domain/entities/user.entity";
 import { IHashProvider } from "@/shared/application/providers/hash.provider";
 import { UserOutput, UserOutputMapper } from "../../dto/userOutput";
 import { UseCase as DefaultUseCase } from "@/shared/application/useCases/UseCase";
+import { InvalidCredentialsError } from "@/shared/application/errors/InvalidCredentialsError";
 
-export namespace SignUpUseCase {
-    export type Input = UserUseCaseTypes.SignUpInput;
+export namespace SignInUseCase {
+    export type Input = UserUseCaseTypes.SignInInput;
 
     export type Output = UserOutput;
 
@@ -18,19 +18,20 @@ export namespace SignUpUseCase {
         ) { }
 
         async execute(data: Input): Promise<Output> {
-            const { email, name, password } = data;
-            if (!email || !name || !password) {
+            const { email, password } = data;
+            if (!email || !password) {
                 throw new BadRequestError("Invalid input data!");
             }
 
-            await this.userRepository.emailExists(email);
+            const userEntity = await this.userRepository.findByEmail(email);
 
-            const encryptedPassword = await this.hashProvider.generateHash(password);
-            const entity = new UserEntity({ email, name, password: encryptedPassword });
+            const passwordMatches = await this.hashProvider.compareHash(password, userEntity.password);
 
-            await this.userRepository.insert(entity);
-
-            return UserOutputMapper.toOutput(entity);
+            if (!passwordMatches) {
+                throw new InvalidCredentialsError("Invalid credentials!");
+            }
+            
+            return UserOutputMapper.toOutput(userEntity);
         }
     }
 }
