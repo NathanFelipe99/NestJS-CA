@@ -80,7 +80,7 @@ import { DeleteUserUseCase } from '../application/useCases/deleteUserUseCase/Del
                 return new DeleteUserUseCase.UseCase(userRepository);
             },
             inject: ["UserRepository"]
-        },
+        }
     ],
 })
 export class UserModule { }
