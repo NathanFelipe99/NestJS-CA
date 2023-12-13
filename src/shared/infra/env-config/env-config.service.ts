@@ -3,9 +3,9 @@ import { IEnvConfig } from './interface/IEnvConfig';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class EnvConfigService implements IEnvConfig{
-    constructor(private configService: ConfigService){}
-    
+export class EnvConfigService implements IEnvConfig {
+    constructor(private configService: ConfigService) { }
+
     getAppPort(): number {
         return Number(this.configService.get<number>('PORT'));
     }

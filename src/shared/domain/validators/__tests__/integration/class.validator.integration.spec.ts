@@ -43,7 +43,6 @@ describe("Class validator fields integration tests", () => {
 
         expect(validator.validate(validateObject)).toBeTruthy();
         expect(validator.errors).toBeNull();
-        console.log(validator.validatedData);
         expect(validator.validatedData).toStrictEqual(new StubRules(validateObject));
     });
 });
