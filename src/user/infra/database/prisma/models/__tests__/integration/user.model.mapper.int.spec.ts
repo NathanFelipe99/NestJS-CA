@@ -1,17 +1,17 @@
 import { PrismaClient, User } from "@prisma/client";
-import { execSync } from "node:child_process";
 import { UserModelMapper } from "../../user.model.mapper";
 import { UserEntity } from "@/user/domain/entities/user.entity";
+import setupPrismaTests from "@/shared/infra/database/prisma/testing/setup.prisma.tests";
 
 describe("User Model Mapper integration tests", () => {
     let databaseService: PrismaClient,
         props: any;
     
     beforeAll(async () => {
-        execSync("npm run prisma-migrate:test");
+        setupPrismaTests();
         databaseService = new PrismaClient();
         await databaseService.$connect();
-    });
+    }, 10000);
 
     beforeEach(async () => {
         await databaseService.user.deleteMany();
@@ -27,7 +27,7 @@ describe("User Model Mapper integration tests", () => {
     it("Should throw an error when the UserModule is invalid", async () => {
         const model: User = Object.assign(props, { name: null });
         expect(() => UserModelMapper.toEntity(model)).toThrowError("The entity hasn't been loaded.");
-    }, 10000);
+    });
 
     it("Should convert an UserModel to an UserEntity", async () => {
         const model: User = await databaseService.user.create({
@@ -37,7 +37,7 @@ describe("User Model Mapper integration tests", () => {
         const SUT = UserModelMapper.toEntity(model);
         expect(SUT).toBeInstanceOf(UserEntity);
         expect(SUT.toJSON()).toStrictEqual(props);
-    }, 20000);
+    });
 
     afterAll(async () => {
         await databaseService.$disconnect();
