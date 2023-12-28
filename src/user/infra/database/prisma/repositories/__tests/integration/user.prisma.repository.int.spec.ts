@@ -79,11 +79,57 @@ describe("User Prisma Repository integration tests", () => {
             });
 
             const searchOutput = await SUT.search(new UserRepository.SearchParams());
+            const searchOutputItems = searchOutput.items;
             expect(searchOutput).toBeInstanceOf(UserRepository.SearchResult);
             expect(searchOutput.total).toBe(16);
             searchOutput.items.forEach((item) => {
                 expect(item).toBeInstanceOf(UserEntity);
             });
+
+            searchOutputItems.reverse().forEach((item, index) => {
+                expect(`test${index + 1}@mail.com`).toBe(item.email);
+            });
+        });
+
+        it("Should search using not-nullable SearchParams", async () => {
+            const arrange = ["test", "teSt22", "TEST", "b", "a"],
+                entities: UserEntity[] = [],
+                createdAt = new Date();
+            arrange.forEach((item, index) => {
+                entities.push(new UserEntity({
+                    ...UserDataBuilder({ name: item }),
+                    email: `test${index}@mail.com`,
+                    createdAt: new Date(createdAt.getTime() + index)
+                }));
+            });
+
+            await prismaService.user.createMany({
+                data: entities.map(entity => entity.toJSON())
+            });
+
+            const searchOutputFirstPage = await SUT.search(new UserRepository.SearchParams({
+                page: 1,
+                perPage: 2,
+                sortField: "name",
+                sortDir: "ASC",
+                filter: "test"
+            }));
+
+            expect(searchOutputFirstPage).toBeInstanceOf(UserRepository.SearchResult);
+            expect(searchOutputFirstPage.total).toBe(3);
+            expect(searchOutputFirstPage.items).toHaveLength(2);
+            expect(searchOutputFirstPage.items[0].toJSON()).toMatchObject(entities[0].toJSON());
+            expect(searchOutputFirstPage.items[1].toJSON()).toMatchObject(entities[2].toJSON());
+
+            const searchOutputSecondPage = await SUT.search(new UserRepository.SearchParams({
+                page: 2,
+                perPage: 2,
+                sortField: "name",
+                sortDir: "ASC",
+                filter: "test"
+            }));
+
+            expect(searchOutputSecondPage.items[0].toJSON()).toMatchObject(entities[1].toJSON());
         });
     });
 });
