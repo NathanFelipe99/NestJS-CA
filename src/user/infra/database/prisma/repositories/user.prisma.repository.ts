@@ -60,34 +60,43 @@ export class UserPrismaRepository implements UserRepository.Repository {
         });
     }
 
-    async insert(entity: UserEntity): Promise < void> {
-    await this.databaseService.user.create({ data: entity.toJSON() });
-}
-
-    async findById(id: string): Promise < UserEntity > {
-    return this._get(id);
-}
-
-    async findAll(): Promise < UserEntity[] > {
-    const models = await this.databaseService.user.findMany();
-    return models.map((model) => UserModelMapper.toEntity(model));
-}
-
-    async update(data: UserEntity): Promise < void> {
-    throw new Error("Method not implemented.");
-}
-
-    async delete (id: string): Promise < void> {
-    throw new Error("Method not implemented.");
-}
-
-    protected async _get(id: string): Promise < UserEntity > {
-    try {
-        const user = await this.databaseService.user.findUnique({ where: { id } });
-
-        return UserModelMapper.toEntity(user);
-    } catch(error) {
-        throw new NotFoundError(`UserModel not found using ID ${id}`);
+    async insert(entity: UserEntity): Promise<void> {
+        await this.databaseService.user.create({ data: entity.toJSON() });
     }
-}
+
+    async findById(id: string): Promise<UserEntity> {
+        return this._get(id);
+    }
+
+    async findAll(): Promise<UserEntity[]> {
+        const models = await this.databaseService.user.findMany();
+        return models.map((model) => UserModelMapper.toEntity(model));
+    }
+
+    async update(data: UserEntity): Promise<void> {
+        await this._get(data._id);
+        await this.databaseService.user.update({
+            data: data.toJSON(),
+            where: {
+                id: data._id
+            }
+        });
+    }
+
+    async delete(id: string): Promise<void> {
+        await this._get(id);
+        await this.databaseService.user.delete({
+            where: { id }
+        });
+    }
+
+    protected async _get(id: string): Promise<UserEntity> {
+        try {
+            const user = await this.databaseService.user.findUnique({ where: { id } });
+
+            return UserModelMapper.toEntity(user);
+        } catch (error) {
+            throw new NotFoundError(`UserModel not found using ID ${id}`);
+        }
+    }
 }

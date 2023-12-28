@@ -132,4 +132,50 @@ describe("User Prisma Repository integration tests", () => {
             expect(searchOutputSecondPage.items[0].toJSON()).toMatchObject(entities[1].toJSON());
         });
     });
+
+    describe("Update method tests", () => {
+        it("Should throw error when entity is not found", async () => {
+            const entity = new UserEntity(UserDataBuilder({}));
+            expect(() => SUT.update(entity)).rejects.toThrow(new NotFoundError(`UserModel not found using ID ${entity._id}`));
+        });
+
+        it("Should update an user entity", async () => {
+            const entity = new UserEntity(UserDataBuilder({}));
+            await prismaService.user.create({
+                data: entity.toJSON()
+            });
+
+            entity.update("New Entity Name");
+            await SUT.update(entity);
+
+            const output = await prismaService.user.findUnique({
+                where: {
+                    id: entity._id
+                }
+            });
+
+            expect(output.name).toStrictEqual(entity.toJSON()?.name);
+        });
+    });
+
+    describe("Delete method tests", () => {
+        it("Should throw an error when entity is not found", async () => {
+            const entity = new UserEntity(UserDataBuilder({}));
+            expect(() => SUT.delete(entity._id)).rejects.toThrow(new NotFoundError(`UserModel not found using ID ${entity._id}`));
+        });
+
+        it("Should delete an entity", async () => {
+            const entity = new UserEntity(UserDataBuilder({}));
+            await prismaService.user.create({
+                data: entity.toJSON()
+            });
+
+            await SUT.delete(entity._id);
+            const output = await prismaService.user.findUnique({
+                where: { id: entity._id }
+            });
+
+            expect(output).toBeNull();
+        });
+    });
 });
