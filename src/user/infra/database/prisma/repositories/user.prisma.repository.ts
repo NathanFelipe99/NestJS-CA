@@ -40,13 +40,13 @@ export class UserPrismaRepository implements UserRepository.Repository {
                         contains: props.filter,
                         mode: "insensitive"
                     }
-                },
-                orderBy: {
-                    [orderByField]: orderByDirection
-                },
-                skip: props.page && (props.page > 0 ? (props.page - 1) * props.perPage : 1),
-                take: props.perPage && (props.perPage > 0 ? props.perPage : 15)
-            })
+                }
+            }),
+            orderBy: {
+                [orderByField]: orderByDirection.toLowerCase()
+            },
+            skip: props.page && (props.page > 0 ? (props.page - 1) * props.perPage : 1),
+            take: props.perPage && (props.perPage > 0 ? props.perPage : 15)
         });
 
         return new UserRepository.SearchResult({
@@ -60,34 +60,34 @@ export class UserPrismaRepository implements UserRepository.Repository {
         });
     }
 
-    async insert(entity: UserEntity): Promise<void> {
-        await this.databaseService.user.create({ data: entity.toJSON() });
-    }
+    async insert(entity: UserEntity): Promise < void> {
+    await this.databaseService.user.create({ data: entity.toJSON() });
+}
 
-    async findById(id: string): Promise<UserEntity> {
-        return this._get(id);
-    }
+    async findById(id: string): Promise < UserEntity > {
+    return this._get(id);
+}
 
-    async findAll(): Promise<UserEntity[]> {
-        const models = await this.databaseService.user.findMany();
-        return models.map((model) => UserModelMapper.toEntity(model));
-    }
+    async findAll(): Promise < UserEntity[] > {
+    const models = await this.databaseService.user.findMany();
+    return models.map((model) => UserModelMapper.toEntity(model));
+}
 
-    async update(data: UserEntity): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+    async update(data: UserEntity): Promise < void> {
+    throw new Error("Method not implemented.");
+}
 
-    async delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+    async delete (id: string): Promise < void> {
+    throw new Error("Method not implemented.");
+}
 
-    protected async _get(id: string): Promise<UserEntity> {
-        try {
-            const user = await this.databaseService.user.findUnique({ where: { id } });
+    protected async _get(id: string): Promise < UserEntity > {
+    try {
+        const user = await this.databaseService.user.findUnique({ where: { id } });
 
-            return UserModelMapper.toEntity(user);
-        } catch (error) {
-            throw new NotFoundError(`UserModel not found using ID ${id}`);
-        }
+        return UserModelMapper.toEntity(user);
+    } catch(error) {
+        throw new NotFoundError(`UserModel not found using ID ${id}`);
     }
+}
 }
