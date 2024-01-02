@@ -5,7 +5,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import setupPrismaTests from "@/shared/infra/database/prisma/testing/setup.prisma.tests";
 import { DatabaseModule } from "@/shared/infra/database/database.module";
 import { UserPrismaRepository } from "@/user/infra/database/prisma/repositories/user.prisma.repository";
-import { PrismaService } from "@/shared/infra/database/prisma/prisma.service";
 import { UserEntity } from "@/user/domain/entities/user.entity";
 import { UserDataBuilder } from "@/user/domain/helper/user-data.builder";
 import { SortDirection } from "@/shared/domain/repositories/searchable-repository.contracts";
