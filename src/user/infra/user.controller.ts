@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, HttpCode, Query, Put } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, HttpCode, Query, Put, HttpException } from "@nestjs/common";
 import { SignUpDTO } from "./dtos/signUp.dto";
 import { UpdateUserDto } from "./dtos/updateUser.dto";
 import { SignUpUseCase } from "../application/useCases/signUpUseCase/SignUpUseCase";
@@ -11,9 +11,16 @@ import { DeleteUserUseCase } from "../application/useCases/deleteUserUseCase/Del
 import { ListUsersDTO } from "./dtos/listUsers.dto";
 import { UpdatePasswordDTO } from "./dtos/updatePassword.dto";
 import { SignInDTO } from "./dtos/signIn.dto";
+import { UserOutput } from "../application/dto/userOutput";
+import { UserPresenter } from "./presenters/user.presenter";
 
 @Controller("user")
 export class UserController {
+
+    static userToResponse(output: UserOutput) {
+        return new UserPresenter.Presenter(output);
+    }
+
     @Inject(SignUpUseCase.UseCase)
     private signUpUseCase: SignUpUseCase.UseCase;
 
@@ -37,13 +44,25 @@ export class UserController {
 
     @Post()
     async create(@Body() data: SignUpDTO) {
-        return await this.signUpUseCase.execute(data);
+        try {
+            const output = await this.signUpUseCase.execute(data);
+            return UserController.userToResponse(output);  
+        } catch (error) {
+            const { message, status = 400 } = error;
+            return new HttpException(message, status);
+        }
     }
 
     @HttpCode(200)
     @Post("login")
     async login(@Body() data: SignInDTO) {
-        return await this.signInUseCase.execute(data);
+        try {
+            const output = await this.signInUseCase.execute(data);
+            return UserController.userToResponse(output);   
+        } catch (error) {
+            const { message, status = 400 } = error;
+            return new HttpException(message, status);
+        }
     }
 
     @Get()
@@ -53,22 +72,46 @@ export class UserController {
 
     @Get(":id")
     async findOne(@Param("id") id: string) {
-        return await this.findUserByIdUseCase.execute({ id });
+        
+        try {
+            const output = await this.findUserByIdUseCase.execute({ id });
+            return UserController.userToResponse(output);
+        } catch (error) {
+            const { message, status = 400 } = error;
+            return new HttpException(message, status);
+        }
     }
 
     @Put(":id")
     async update(@Param("id") id: string, @Body() data: UpdateUserDto) {
-        return await this.updateUserUseCase.execute({ id, ...data });
+        try {
+            const output = await this.updateUserUseCase.execute({ id, ...data });
+            return UserController.userToResponse(output);
+        } catch (error) {
+            const { message, status = 400 } = error;
+            return new HttpException(message, status);
+        }
     }
 
     @Patch(":id")
     async updatePassword(@Param("id") id: string, data: UpdatePasswordDTO) {
-        return await this.updatePasswordUseCase.execute({ id, ...data });
+        try {
+            const output = await this.updatePasswordUseCase.execute({ id, ...data });
+            return UserController.userToResponse(output);
+        } catch (error) {
+            const { message, status = 400 } = error;
+            return new HttpException(message, status);
+        }
     }
 
     @HttpCode(204)
     @Delete(":id")
     async remove(@Param("id") id: string) {
-        await this.deleteUserUseCase.execute({ id });
+        try {
+            await this.deleteUserUseCase.execute({ id });
+        } catch (error) {
+            const { message, status = 400 } = error;
+            return new HttpException(message, status);
+        }
     }
 }
