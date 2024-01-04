@@ -72,7 +72,6 @@ export class UserController {
 
     @Get(":id")
     async findOne(@Param("id") id: string) {
-        
         try {
             const output = await this.findUserByIdUseCase.execute({ id });
             return UserController.userToResponse(output);
