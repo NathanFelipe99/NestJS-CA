@@ -169,8 +169,10 @@ describe("UserController unit tests", () => {
         };
 
         SUT["listUsersUseCase"] = mockListUsersUseCase as any;
-        const result = await SUT.search(searchParams);
-        expect(output).toStrictEqual(result);
+        const presenter = await SUT.search(searchParams);
+        
+        expect(presenter).toBeInstanceOf(UserPresenter.CollectionPresenter);
+        expect(presenter).toEqual(new UserPresenter.CollectionPresenter(output));
         expect(mockListUsersUseCase.execute).toHaveBeenCalledWith(searchParams);
     });
 });
