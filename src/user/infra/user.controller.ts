@@ -21,6 +21,10 @@ export class UserController {
         return new UserPresenter.Presenter(output);
     }
 
+    static userListToResponse(output: ListUsersUseCase.Output) {
+        return new UserPresenter.CollectionPresenter(output);
+    }
+
     @Inject(SignUpUseCase.UseCase)
     private signUpUseCase: SignUpUseCase.UseCase;
 
@@ -67,7 +71,13 @@ export class UserController {
 
     @Get()
     async search(@Query() searchParams: ListUsersDTO) {
-        return await this.listUsersUseCase.execute(searchParams);
+        try {
+            const output = await this.listUsersUseCase.execute(searchParams);
+            return UserController.userListToResponse(output);
+        } catch (error) {
+            const { message, status = 400 } = error;
+            return new HttpException(message, status);
+        }
     }
 
     @Get(":id")

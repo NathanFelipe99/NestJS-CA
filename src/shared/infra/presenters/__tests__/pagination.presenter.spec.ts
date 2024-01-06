@@ -1,5 +1,5 @@
 import { instanceToPlain } from "class-transformer";
-import { PaginationPresenter } from "../../presenters/pagination.presenter";
+import { PaginationPresenter } from "../pagination.presenter";
 
 describe("Pagination presenter unit tests", () => {
 

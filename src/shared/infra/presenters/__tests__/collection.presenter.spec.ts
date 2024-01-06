@@ -1,6 +1,6 @@
 import { instanceToPlain } from "class-transformer";
-import { CollectionPresenter } from "../../presenters/collection.presenter";
-import { PaginationPresenter } from "../../presenters/pagination.presenter";
+import { CollectionPresenter } from "../collection.presenter";
+import { PaginationPresenter } from "../pagination.presenter";
 
 class StubCollectionPresenterClass extends CollectionPresenter {
     data = [1, 2, 3];
