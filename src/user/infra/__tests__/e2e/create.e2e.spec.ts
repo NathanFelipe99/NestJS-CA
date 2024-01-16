@@ -10,6 +10,7 @@ import { DatabaseModule } from "@/shared/infra/database/database.module";
 import request from "supertest";
 import { UserController } from "../../user.controller";
 import { instanceToPlain } from "class-transformer";
+import { applyGlobalInterceptors } from "@/global.config";
 
 describe("Create end-to-end test", () => {
     let application: INestApplication,
@@ -26,6 +27,7 @@ describe("Create end-to-end test", () => {
         }).compile();
 
         application = module.createNestApplication();
+        applyGlobalInterceptors(application);
         await application.init();
         repository = module.get<UserRepository.Repository>("UserRepository");
     }, 12000);
