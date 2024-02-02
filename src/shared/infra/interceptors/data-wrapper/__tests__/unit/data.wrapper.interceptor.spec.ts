@@ -1,4 +1,4 @@
-import { Observable, of } from "rxjs";
+import {  of } from "rxjs";
 import { DataWrapperInterceptor } from "../../data.wrapper.interceptor";
 
 describe("DataWrapperInterceptor", () => {

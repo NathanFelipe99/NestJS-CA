@@ -45,17 +45,12 @@ describe("Create end-to-end test", () => {
         it("Should create an user", async () => {
             const endpoint = "/user"
             const response = await request(application.getHttpServer()).post(endpoint).send(signUpDTO).expect(201);
-            expect(Object.keys(response.body)).toStrictEqual([
-                "id",
-                "name",
-                "email",
-                "createdAt"
-            ]);
+            expect(Object.keys(response.body)).toStrictEqual(["data"]);
 
-            const user = await repository.findById(response.body.id);
+            const user = await repository.findById(response.body.data.id);
             const userPresenter = UserController.userToResponse(user.toJSON());
             const serialized = instanceToPlain(userPresenter);
-            expect(response.body).toStrictEqual(serialized);
+            expect(response.body.data).toStrictEqual(serialized);
         });
     });
 });
