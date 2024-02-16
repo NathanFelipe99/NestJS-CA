@@ -48,13 +48,8 @@ export class UserController {
 
     @Post()
     async create(@Body() data: SignUpDTO) {
-        try {
-            const output = await this.signUpUseCase.execute(data);
-            return UserController.userToResponse(output);  
-        } catch (error) {
-            const { message, status = 400 } = error;
-            return new HttpException(message, status);
-        }
+        const output = await this.signUpUseCase.execute(data);
+        return UserController.userToResponse(output);
     }
 
     @HttpCode(200)
@@ -62,7 +57,7 @@ export class UserController {
     async login(@Body() data: SignInDTO) {
         try {
             const output = await this.signInUseCase.execute(data);
-            return UserController.userToResponse(output);   
+            return UserController.userToResponse(output);
         } catch (error) {
             const { message, status = 400 } = error;
             return new HttpException(message, status);

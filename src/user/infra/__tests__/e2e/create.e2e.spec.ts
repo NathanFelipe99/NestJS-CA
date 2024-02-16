@@ -11,6 +11,8 @@ import request from "supertest";
 import { UserController } from "../../user.controller";
 import { instanceToPlain } from "class-transformer";
 import { applyGlobalInterceptors } from "@/global.config";
+import { UserEntity } from "@/user/domain/entities/user.entity";
+import { UserDataBuilder } from "@/user/domain/helper/user-data.builder";
 
 describe("Create end-to-end test", () => {
     let application: INestApplication,
@@ -112,6 +114,21 @@ describe("Create end-to-end test", () => {
                 "property age should not exist"
             ]);
             expect(error).toBe("Unprocessable Entity");
+        });
+
+        it("Should return an error with 409 status code when email already exists", async () => {
+            const entity = new UserEntity(UserDataBuilder({ ...signUpDTO }));
+            await repository.insert(entity);
+            const response = await request(application.getHttpServer())
+                .post(endpoint)
+                .send(signUpDTO)
+                .expect(409)
+                .expect({
+                    statusCode: 409,
+                    error: "Conflict",
+                    message: "Email address already exists!"
+                });
+            console.log(response.body);
         });
     });
 });
